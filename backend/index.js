@@ -48,6 +48,15 @@ app.post("/api/login", async (req, res) => {
     res.status(400).json({ success: false, error: error.message });
   }
 });
+
+app.get("/api/public", (req, res) => {
+  try {
+    return res.json({ success: true, message: "Hello from Profile" });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ success: false, error: error.message });
+  }
+});
 const PORT = 6000;
 connectDatabase();
 app.listen(PORT, async () => {
