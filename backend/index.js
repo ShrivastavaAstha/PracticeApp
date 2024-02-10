@@ -31,6 +31,23 @@ app.post("/api/signup", async (req, res) => {
     return res.status(400).json({ success: false, error: error.message });
   }
 });
+
+app.post("/api/login", async (req, res) => {
+  try {
+    const { email } = req.body;
+    let inputpassword = req.body.password;
+    const checkuser = await registermodel.findOne({ email: email });
+
+    if (!checkuser) {
+      return res.status(400).json({
+        success: false,
+        error: "User not found, please signup first!",
+      });
+    }
+  } catch (error) {
+    res.status(400).json({ success: false, error: error.message });
+  }
+});
 const PORT = 6000;
 connectDatabase();
 app.listen(PORT, async () => {
