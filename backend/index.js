@@ -22,7 +22,7 @@ const checkIfUserLoggedIn = (req, res, next) => {
 };
 
 //--------------------public api----------------
-app.get("/public", checkUserLoggedIn, (req, res) => {
+app.get("/public", checkIfUserLoggedIn, (req, res) => {
   try {
     return res.json({ success: true, message: "Hello from the public side" });
   } catch (error) {
