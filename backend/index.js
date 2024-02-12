@@ -1,8 +1,26 @@
 const express = require("express");
 const app = express();
 app.use(express.json());
+const cookies = require("cookie-parser");
 const { connectDatabase } = require("./connection/connect");
 const registermodel = require("./models/registered_data");
+const verifyToken = require("./tokens/verifyToken");
+const generateToken = require("./tokens/generateToken");
+const { encryptPassword, verifyPassword } = require("./functions/encryption");
+
+//--------------------middleware----------------
+
+const checkIfUserLoggedIn = (req, res, next) => {
+  if (verifyToken(req.cookies.auth_tk)) {
+    const userinfo = verifyToken(req.cookies.auth_tk);
+    req.userid = userinfo.indexOf;
+    next();
+  } else {
+    return res.status(400).json({ success: false, error: "UNAUTHORIZED" });
+  }
+};
+
+//--------------------public api----------------
 
 //--------------------signup api----------------
 app.post("/api/signup", async (req, res) => {
