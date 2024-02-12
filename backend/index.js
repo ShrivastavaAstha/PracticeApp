@@ -7,6 +7,7 @@ const registermodel = require("./models/registered_data");
 const verifyToken = require("./tokens/verifyToken");
 const generateToken = require("./tokens/generateToken");
 const { encryptPassword, verifyPassword } = require("./functions/encryption");
+const { FormatAlignJustifyRounded } = require("@mui/icons-material");
 
 //--------------------middleware----------------
 
@@ -74,6 +75,35 @@ app.post("/api/login", async (req, res) => {
     res.status(400).json({ success: false, error: error.message });
   }
 });
+
+//for mfa verification-------------------------
+
+app.post("/api/mfaverify", async (req, res) => {
+  try {
+    let email = req.body.email;
+    let inputpassword = req.body.password;
+    let code = req.body.code;
+    const checkuser = await registermodel.findOne({ email: email });
+    if (!checkuser) {
+      return res
+        .status(400)
+        .json({ success: false, error: "User not found, please signup first" });
+    }
+    let originalpassword = checkuser.password;
+
+    if (await verifyPassword(inputpassword, originalpassword)) {
+      const token = generateToken(checkuser._id);
+      res.cookie("auth_tk", token);
+      console.log(token);
+      return res.json({ success: true, message: "Logged in successfully." });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ success: false, error: error.message });
+  }
+});
+
+//Public api-----------------------------------
 
 app.get("/api/public", (req, res) => {
   try {
