@@ -21,6 +21,14 @@ const checkIfUserLoggedIn = (req, res, next) => {
 };
 
 //--------------------public api----------------
+app.get("/public", checkUserLoggedIn, (req, res) => {
+  try {
+    return res.json({ success: true, message: "Hello from the public side" });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ success: false, error: error.message });
+  }
+});
 
 //--------------------signup api----------------
 app.post("/api/signup", async (req, res) => {
