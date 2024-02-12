@@ -58,6 +58,7 @@ app.post("/api/signup", async (req, res) => {
     return res.status(400).json({ success: false, error: error.message });
   }
 });
+//--------------login api---------------------------
 
 app.post("/api/login", async (req, res) => {
   try {
