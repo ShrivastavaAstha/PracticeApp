@@ -103,7 +103,24 @@ app.post("/api/mfaverify", async (req, res) => {
   }
 });
 
-//Public api-----------------------------------
+//current user api-------------------------------------
+
+app.get("/currentuser", checkIfUserLoggedIn, async (req, res) => {
+  try {
+    const userid = req.userid;
+    const userdetails = await registermodel.findOne({ _id: userid });
+    if (userdetails) {
+      return res.json({ success: true, data: userdetails });
+    } else {
+      return res.status(400).json({ success: false, error: "User not found" });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ success: false, error: error.message });
+  }
+});
+
+//Public api-------------------------------------------
 
 app.get("/api/public", (req, res) => {
   try {
