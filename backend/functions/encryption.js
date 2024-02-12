@@ -12,7 +12,7 @@ const encryptPassword = async (originalpassword) => {
 const verifyPassword = async (inputPassword, encryptedPassword) => {
   try {
     const checkPassword = await bcrypt.compare(
-      inputPAssword,
+      inputPassword,
       encryptedPassword
     );
     return checkPassword;
