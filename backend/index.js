@@ -2,12 +2,12 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 const cookies = require("cookie-parser");
+app.use(cookies());
 const { connectDatabase } = require("./connection/connect");
 const registermodel = require("./models/registered_data");
 const verifyToken = require("./tokens/verifyToken");
 const generateToken = require("./tokens/generateToken");
 const { encryptPassword, verifyPassword } = require("./functions/encryption");
-const { FormatAlignJustifyRounded } = require("@mui/icons-material");
 
 //--------------------middleware----------------
 
@@ -42,7 +42,7 @@ app.post("/api/signup", async (req, res) => {
     const obj = {
       username: req.body.username,
       email: req.body.email,
-      password: req.body.password,
+      password: await encryptPassword(req.body.password),
       dob: req.body.dob,
       contact: req.body.contact,
     };
