@@ -130,6 +130,17 @@ app.get("/api/public", (req, res) => {
     res.status(400).json({ success: false, error: error.message });
   }
 });
+
+//logout api -------------------------------------------
+app.get("/logout", (req, res) => {
+  try {
+    res.clearCookie("auth_tk");
+    return res.json({ success: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ success: false, error: error.message });
+  }
+});
 const PORT = 6000;
 connectDatabase();
 app.listen(PORT, async () => {
