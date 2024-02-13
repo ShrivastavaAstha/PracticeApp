@@ -14,7 +14,7 @@ const { encryptPassword, verifyPassword } = require("./functions/encryption");
 const checkIfUserLoggedIn = (req, res, next) => {
   if (verifyToken(req.cookies.auth_tk)) {
     const userinfo = verifyToken(req.cookies.auth_tk);
-    req.userid = userinfo.indexOf;
+    req.userid = userinfo.id;
     next();
   } else {
     return res.status(400).json({ success: false, error: "UNAUTHORIZED" });
